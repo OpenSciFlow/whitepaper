@@ -25,6 +25,7 @@ AI for Science does not only need stronger models or more autonomous agents. It 
 ## Current draft
 
 - `drafts/toward-open-modular-local-first-ai4s-workflows.md`
+- `briefs/position-note-v0.1.md`
 
 ## Contribution policy
 
@@ -33,4 +34,3 @@ See:
 - `policies/authorship.md`
 
 White paper authorship requires substantial intellectual contribution to framing, standard design, architecture, analysis, or writing. Smaller contributions should be acknowledged.
-
