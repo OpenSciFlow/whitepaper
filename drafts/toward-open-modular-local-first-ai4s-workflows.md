@@ -2,7 +2,7 @@
 
 ## Status
 
-Draft 0.1 outline for community feedback. This is a position paper draft, not a mature system evaluation.
+Draft 0.2 working draft for community feedback. This is a position paper draft, not a mature system evaluation.
 
 ## Abstract draft
 
@@ -24,14 +24,35 @@ Natural-language agents can become a convenient entry point for scientific compu
 - reproducibility records;
 - explicit limitations.
 
-## Proposed structure
+## 1. Introduction draft
+
+AI for Science is entering a phase in which useful capabilities are no longer concentrated in a single kind of artifact. Research groups now encounter foundation models, specialized scientific models, agent interfaces, domain packages, workflow engines, model hubs, container registries, and high-performance computing systems in the same practical workflow. A protein researcher may need a molecular dynamics tool, a trajectory-analysis library, a local report generator, a citation trail, and a cluster scheduler. A chemistry researcher may need a docking model, molecule preprocessing, model weights, GPU-aware execution, and clear warnings about what a confidence score does and does not mean. In both cases, scientific value depends not only on model quality, but on whether the surrounding execution and provenance layer is explicit enough to be inspected, reproduced, and corrected.
+
+Natural-language interfaces can reduce the friction of starting a task, but they do not remove the need for structured execution. A language model can help a researcher ask for "trajectory stability analysis" or "dock this ligand to this protein", yet the system still needs to know which tool is allowed to run, which inputs are required, which environment is expected, whether a GPU is needed, which model weights may be downloaded, what files should be produced, what citation should be attached, and which scientific claims are outside the tool's scope. Without this metadata, agent-driven scientific workflows risk becoming convenient wrappers around opaque commands.
+
+Existing scientific workflow systems already solve important parts of this problem. Systems such as Nextflow, Snakemake, Galaxy, CWL, AiiDA, Parsl, and HPC schedulers provide mature patterns for orchestration, provenance, and scale. Package and container ecosystems such as Conda, Bioconda, BioContainers, Spack, Docker, and Apptainer address installation and portability. Domain libraries such as MDAnalysis, OpenMM, GROMACS, BioBB, BioSimSpace, RDKit, and many others encode deep scientific practice. OpenSciFlow is not proposed as a replacement for these systems. Its narrower goal is to define a lightweight, correction-friendly layer that helps agents, workflow templates, and local/HPC runners understand the metadata needed to use such tools responsibly.
+
+The central proposal is simple: before an AI-for-science system executes a scientific tool, it should be able to read a small manifest that describes the tool's inputs, outputs, environment, hardware, model weights, validation checks, licenses, citations, limitations, and safe execution modes. Before a user trusts a multi-step task, they should be able to inspect a workflow template that states what will run and what artifacts will be produced. After execution, the system should produce a run record that captures inputs, commands, versions, logs, artifacts, citations, and warnings. OpenSciFlow starts by drafting these artifacts for a narrow reference use case rather than claiming a universal platform.
+
+## 2. Problem statement draft
+
+The first problem is tool and model fragmentation. AI-for-science tools often expose different assumptions about inputs, model weights, runtime environments, and outputs. Some tools are Python packages, some are command-line programs, some are notebooks, some are containerized services, and some are hosted demos. A researcher or agent that wants to compose them into a workflow must translate between these conventions manually. This makes reuse fragile and makes it hard for a downstream system to know which assumptions are safe.
+
+The second problem is environment ambiguity. Many scientific tools depend on specific Python versions, compiled libraries, CUDA versions, GPU availability, external binaries, or HPC site policies. A natural-language interface that hides these constraints can make the user experience smoother, but it can also obscure the true execution risk. A workflow metadata layer should expose environment options explicitly: local Conda, Docker, Apptainer, system install, or Slurm execution. It should also distinguish between "available", "missing", "partial", and "unsupported" rather than silently trying arbitrary installation commands.
+
+The third problem is provenance loss. In a research workflow, the output file is not enough. The user needs to know what input files were used, which hashes they had, which command ran, which versions were active, which model weights were loaded, which logs were produced, and which citations and limitations belong with the result. This is especially important when AI models or agents are involved, because the temptation to present a polished report can hide fragile execution details.
+
+The fourth problem is credit and license propagation. Scientific tools and datasets come with authorship, citation, and licensing obligations. Model weights and example datasets may have terms that differ from the surrounding code. If an agent or workflow runner downloads, runs, or reports on these artifacts without preserving credit and license metadata, it creates both ethical and practical barriers to adoption. A manifest should make these fields visible before execution, not after publication.
+
+The fifth problem is scientific overclaiming. Many computational outputs are descriptive, approximate, or hypothesis-generating. A molecular dynamics stability report does not prove biological function. A docking pose does not prove binding affinity, drug efficacy, or clinical relevance. A model confidence score is not automatically a validated scientific conclusion. OpenSciFlow therefore treats limitations and safety notes as first-class metadata, not as optional prose at the end of a report.
+
+The final problem is correction and governance. Early ecosystem maps can easily misclassify projects, use stale links, miss citations, or imply relationships that do not exist. OpenSciFlow's public outreach should therefore be correction-oriented: listed projects are related references, not partners unless maintainers explicitly agree. The initiative should be judged by how quickly it accepts corrections and removes misleading claims.
+
+## Remaining structure
 
 ### 1. Introduction
 
-- AI for Science models and agents are growing quickly.
-- Real lab adoption is blocked by execution, environment, and reproducibility friction.
-- Natural-language interfaces are useful but insufficient.
-- Open infrastructure is needed between models, tools, workflows, and local/HPC systems.
+Drafted above.
 
 ### 2. Landscape
 
@@ -47,15 +68,7 @@ Cover:
 
 ### 3. Problem statement
 
-Key problems:
-
-- model islands;
-- environment setup friction;
-- dependency and hardware ambiguity;
-- HPC deployment heterogeneity;
-- weak provenance capture;
-- unclear license/citation propagation;
-- AI hallucination risk in scientific workflows.
+Drafted above.
 
 ### 4. Design principles
 
@@ -179,4 +192,3 @@ Call for community feedback on:
 - SC workflow/HPC workshops.
 - ISMB / BOSC.
 - JOSS later, only after there is mature software.
-
